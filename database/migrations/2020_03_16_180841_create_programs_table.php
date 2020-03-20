@@ -15,6 +15,8 @@ class CreateProgramsTable extends Migration
     {
         Schema::create('programs', function (Blueprint $table) {
 
+            $table->engine = 'InnoDB';
+
             $table->bigIncrements('id'); // ID программы
             $table->string('name'); // Название программы
             $table->string('bot_name'); // Название программы

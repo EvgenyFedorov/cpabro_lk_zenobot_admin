@@ -15,6 +15,8 @@ class CreateAccessesTable extends Migration
     {
         Schema::create('accesses', function (Blueprint $table) {
 
+            $table->engine = 'InnoDB';
+
             $table->bigIncrements('id'); // ID доступов
 
             $table->unsignedBigInteger('user_id'); // ID юзера

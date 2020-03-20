@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
 
+            $table->engine = 'InnoDB';
+
             $table->bigIncrements('id'); // ID юзера
             $table->integer('parent_user')->default(0); // ID родтельского юзера
             $table->string('name'); // Имя юзера

@@ -15,6 +15,8 @@ class CreateJobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
 
+            $table->engine = 'InnoDB';
+
             $table->bigIncrements('id'); // ID задачи
             $table->unsignedBigInteger('program_id')->nullable(); // ID Приложения
             $table->unsignedBigInteger('user_id')->nullable(); // ID Приложения
