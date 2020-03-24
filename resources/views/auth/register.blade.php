@@ -29,7 +29,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail адрес') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -43,8 +43,8 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Логин на CPABRO') }}</label>
 
                             <div class="col-md-6">
-                                <input id="cpabro_login" type="text" class="form-control @error('cpabro_login') is-invalid @enderror" name="cpabro_login" value="{{ old('cpabro_login') }}" required autocomplete="cpabro_login" autofocus>
-
+                                <input id="cpabro_login" type="text" class="form-control @error('cpabro_login') is-invalid @enderror" name="cpabro_login" value="{{ old('cpabro_login') }}" autocomplete="cpabro_login" autofocus>
+                                <input id="how" type="hidden" class="form-control" name="how">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

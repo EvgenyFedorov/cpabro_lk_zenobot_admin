@@ -16,6 +16,76 @@
                     </div>
                 </div>
             </div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <form method="POST" action="{{ url('/logs') }}">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select id="FormFilterSelectUserEmail" class="selectpicker form-control" title="Поиск по Email(у)" multiple data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                    @foreach($users as $user)
+                                        @if(isset($params['email']['in']) AND in_array($user->id, $params['email']['in']))
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->email}}</option>
+                                        @elseif(isset($params['email']) AND $user->id == $params['email'])
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->email}}</option>
+                                        @else
+                                            <option data-tokens="mustard" style="font-size: 16px;" value="{{$user->id}}">{{$user->email}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="FormFilterSelectUserCpabrologin" class="selectpicker form-control" title="Поиск по логину CPABRO" multiple data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                    @foreach($users as $user)
+                                        @if(isset($params['cpabro_login']['in']) AND in_array($user->id, $params['cpabro_login']['in']))
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->cpabro_login}}</option>
+                                        @elseif(isset($params['cpabro_login']) AND $user->id == $params['cpabro_login'])
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->cpabro_login}}</option>
+                                        @else
+                                            <option data-tokens="mustard" style="font-size: 16px;" value="{{$user->id}}">{{$user->cpabro_login}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="FormFilterSelectProgram" class="selectpicker form-control" title="Поиск по приложению" multiple data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                    @foreach($programs as $program)
+                                        @if(isset($params['program']['in']) AND in_array($program->id, $params['program']['in']))
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$program->id}}">{{$program->name}}</option>
+                                        @elseif(isset($params['program']) AND $program->id == $params['program'])
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$program->id}}">{{$program->name}}</option>
+                                        @else
+                                            <option data-tokens="mustard" style="font-size: 16px;" value="{{$program->id}}">{{$program->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="FormFilterSelectCode" class="selectpicker form-control" title="Поиск по Коду" multiple data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                    @foreach($jobs as $job)
+                                        @if(isset($params['code']['in']) AND in_array($job->id, $params['code']['in']))
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$job->id}}">{{$job->code_id}}</option>
+                                        @elseif(isset($params['code']) AND $job->id == $params['code'])
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$job->id}}">{{$job->code_id}}</option>
+                                        @else
+                                            <option data-tokens="mustard" style="font-size: 16px;" value="{{$job->id}}">{{$job->code_id}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="hidden" id="FilterSelectUserEmailIds" name="email" value="<?=(isset($input['email'])) ? $input['email'] : ''; ?>">
+                            <input type="hidden" id="FilterSelectUserCpabrologinIds" name="cpabro_login" value="<?=(isset($input['cpabro_login'])) ? $input['cpabro_login'] : ''; ?>">
+                            <input type="hidden" id="FilterSelectProgramIds" name="program" value="<?=(isset($input['program'])) ? $input['program'] : ''; ?>">
+                            <input type="hidden" id="FilterSelectCodeIds" name="code" value="<?=(isset($input['code'])) ? $input['code'] : ''; ?>">
+                            <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}"/>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success form-control">
+                                    {{ __('Применить') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="card">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -100,7 +170,9 @@
                                 <tr>
                                     <td colspan="10" style="text-align: center;">
                                         <div style="display: inline-block;">
-                                            <?=$data_jobs->render(); ?>
+                                            @if(isset($data_jobs))
+                                                <?=$data_jobs->render(); ?>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

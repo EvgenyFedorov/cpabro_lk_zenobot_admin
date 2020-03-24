@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\RolesController;
 use App\Http\Controllers\User\UserController;
 use App\Models\Bot\Jobs;
+use App\Repositories\Filter\FilterRepository;
+use App\Repositories\Job\JobRepository;
+use App\Repositories\Program\ProgramRepository;
+use App\Repositories\QueryBuilder\QueryBuilderRepository;
+use App\Repositories\User\UserRepository;
+use Auth;
 use Illuminate\Http\Request;
 
 class CabinetLogsController extends UserController
@@ -25,25 +31,57 @@ class CabinetLogsController extends UserController
         return ($url == null) ? redirect('/users') : redirect($url);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+    public function index(
+        Request $request,
+        UserRepository $userRepository,
+        ProgramRepository $programRepository,
+        JobRepository $jobRepository,
+        FilterRepository $filterRepository,
+        QueryBuilderRepository $queryBuilderRepository
+    ){
 
         if($result = $this->isRole()){
 
-            $data_jobs = $this->jobs()->getAll();
+            $input = $request->input();
+
+            $params = $filterRepository->getParams();
+
+            $users = $userRepository->getAllForFilter();
+            $programs = $programRepository->getAllForFilter();
+            $jobs = $jobRepository->getAllForFilter();
+
+//            print "<pre>";
+
+            $queries = $queryBuilderRepository->getParamsQueryJobs();
+
+//            if(isset($queries['where']['in'])){
+//                $data_jobs = $jobRepository->getAllIn($queries['where']['in']);
+//            }else{
+//                $data_jobs = $jobRepository->getAll($queries['where']);
+//            }
+
+            $data_jobs = $jobRepository->getData($queries);
+
+//            print "<pre>";
+//            print_r($programs);
+//            print_r($queries);
+//            print_r($params);
+//            print_r($input);
+//            print_r($data_jobs);
 
             return view($result['role']['dir'] . '.logs.list', [
                 'user' => $result['user'],
                 'role' => $result['role'],
-                'data_jobs' => $data_jobs
+                'data_jobs' => $data_jobs,
+                'users' => $users,
+                'programs' => $programs,
+                'jobs' => $jobs,
+                'params' => $params,
+                'input' => $input,
             ]);
 
         }else{
+            Auth::logout();
             return redirect('/access-denied');
         }
 
@@ -68,7 +106,8 @@ class CabinetLogsController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -139,7 +178,8 @@ class CabinetLogsController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -156,7 +196,8 @@ class CabinetLogsController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -179,7 +220,8 @@ class CabinetLogsController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -209,7 +251,8 @@ class CabinetLogsController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -232,7 +275,8 @@ class CabinetLogsController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
 
     }
@@ -250,7 +294,8 @@ class CabinetLogsController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 }

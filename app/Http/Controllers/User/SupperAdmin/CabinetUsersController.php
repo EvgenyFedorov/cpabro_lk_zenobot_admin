@@ -9,6 +9,10 @@ use App\Models\User;
 use App\Models\Users\Accesses;
 use App\Models\Users\Programs;
 use App\Models\Users\Roles;
+use App\Repositories\Filter\FilterRepository;
+use App\Repositories\QueryBuilder\QueryBuilderRepository;
+use App\Repositories\User\UserRepository;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -29,25 +33,37 @@ class CabinetUsersController extends UserController
         return ($url == null) ? redirect('/users') : redirect($url);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request, UserRepository $userRepository, FilterRepository $filterRepository, QueryBuilderRepository $queryBuilderRepository)
     {
 
         if($result = $this->isRole()){
 
-            $data_users = $this->users()->getPaginate();
+            $input = $request->input();
+            $params = $filterRepository->getParams();
+
+            $users = $userRepository->getAllForFilter();
+
+            $response = $this->response()->Json()->getResult();
+
+            $queries = $queryBuilderRepository->getParamsQueryUsers();
+
+            if(isset($queries['where']['in'])){
+                $data_users = $userRepository->getAllIn($queries['where']['in']);
+            }else{
+                $data_users = $userRepository->getAll($queries['where']);
+            }
 
             return view($result['role']['dir'] . '.users.list', [
                 'user' => $result['user'],
                 'role' => $result['role'],
-                'data_users' => $data_users
+                'data_users' => $data_users,
+                'input' => $input,
+                'users' => $users,
+                'params' => $params,
             ]);
 
         }else{
+            Auth::logout();
             return redirect('/access-denied');
         }
     }
@@ -72,7 +88,8 @@ class CabinetUsersController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -172,7 +189,8 @@ class CabinetUsersController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -189,7 +207,8 @@ class CabinetUsersController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -219,7 +238,8 @@ class CabinetUsersController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -276,7 +296,8 @@ class CabinetUsersController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -317,7 +338,8 @@ class CabinetUsersController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 }

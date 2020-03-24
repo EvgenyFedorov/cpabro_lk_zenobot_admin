@@ -1,6 +1,7 @@
 @extends('SupperAdmin.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -14,6 +15,40 @@
                             Юзеры
                         </span>
                     </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <form method="POST" action="{{ route('register') }}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select id="FilterSelectUserEmail" class="selectpicker form-control" title="Поиск по Email(у)" multiple data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                    @foreach($users as $user)
+                                        @if(isset($params['email']['in']) AND in_array($user->id, $params['email']['in']))
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->email}}</option>
+                                        @elseif(isset($params['email']) AND $user->id == $params['email'])
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->email}}</option>
+                                        @else
+                                            <option data-tokens="mustard" style="font-size: 16px;" value="{{$user->id}}">{{$user->email}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="FilterSelectUserCpabrologin" class="selectpicker form-control" title="Поиск по логину CPABRO" multiple data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                    @foreach($users as $user)
+                                        @if(isset($params['cpabro_login']['in']) AND in_array($user->id, $params['cpabro_login']['in']))
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->cpabro_login}}</option>
+                                        @elseif(isset($params['cpabro_login']) AND $user->id == $params['cpabro_login'])
+                                            <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$user->id}}">{{$user->cpabro_login}}</option>
+                                        @else
+                                            <option data-tokens="mustard" style="font-size: 16px;" value="{{$user->id}}">{{$user->cpabro_login}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="card">
@@ -105,5 +140,11 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="FilterIsset" value="<?=(count($params) > 0) ? 1 : ''; ?>">
+
+    <input type="hidden" id="FilterSelectUserEmailIds" value="<?=(isset($input['email'])) ? $input['email'] : ''; ?>">
+    <input type="hidden" id="FilterSelectUserCpabrologinIds" value="<?=(isset($input['cpabro_login'])) ? $input['cpabro_login'] : ''; ?>">
+
 </div>
 @endsection

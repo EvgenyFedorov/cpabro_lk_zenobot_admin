@@ -2,6 +2,89 @@ $(document).ready(function(){
 
     console.log(location);
 
+    $('#FilterSelectUserEmail').on('change', function (e, clickedIndex, isSelected, previousValue) {
+
+        if($('#FilterSelectUserEmailIds').val().length > 0 && $(this).val() !== null) {
+
+            location.href = location.search.replace("email=" + $('#FilterSelectUserEmailIds').val(), "email=" + $(this).val());
+
+        }else if($(this).val() === null){
+
+            var location_href_replace = location.href.replace("?email=" + $('#FilterSelectUserEmailIds').val(), "");
+            location.href = location_href_replace.replace("&email=" + $('#FilterSelectUserEmailIds').val(), "");
+
+        }else{
+
+            if($('#FilterIsset').val() === "1"){
+
+                var location_replace = replaceParams('cpabro_login');
+                location.href = "?email=" + $(this).val();
+
+            }else{
+
+                location.href = "?email=" + $(this).val();
+
+            }
+
+        }
+
+    });
+
+    $('#FilterSelectUserCpabrologin').on('change', function (e, clickedIndex, isSelected, previousValue) {
+
+        if($('#FilterSelectUserCpabrologinIds').val().length > 0 && $(this).val() !== null) {
+
+            location.href = location.search.replace("cpabro_login=" + $('#FilterSelectUserCpabrologinIds').val(), "cpabro_login=" + $(this).val());
+
+        }else if($(this).val() === null){
+
+            var location_href_replace = location.href.replace("?cpabro_login=" + $('#FilterSelectUserCpabrologinIds').val(), "");
+            location.href = location_href_replace.replace("&cpabro_login=" + $('#FilterSelectUserCpabrologinIds').val(), "");
+
+        }else{
+
+            if($('#FilterIsset').val() === "1"){
+
+                var location_replace = replaceParams('email');
+                location.href = "?cpabro_login=" + $(this).val();
+
+            }else{
+
+                location.href = "?cpabro_login=" + $(this).val();
+
+            }
+
+        }
+
+    });
+
+    $('#FormFilterSelectUserEmail').on('change', function (e, clickedIndex, isSelected, previousValue) {
+        $('#FilterSelectUserEmailIds').val($(this).val());
+    });
+    $('#FormFilterSelectUserCpabrologin').on('change', function (e, clickedIndex, isSelected, previousValue) {
+        $('#FilterSelectUserCpabrologinIds').val($(this).val());
+    });
+    $('#FormFilterSelectProgram').on('change', function (e, clickedIndex, isSelected, previousValue) {
+        $('#FilterSelectProgramIds').val($(this).val());
+    });
+    $('#FormFilterSelectCode').on('change', function (e, clickedIndex, isSelected, previousValue) {
+        $('#FilterSelectCodeIds').val($(this).val());
+    });
+
+    function replaceParams(param){
+
+        var location_replace = "";
+
+        if(param === "email"){
+            location_replace = location.search.replace("?email=" + $('#FilterSelectUserEmailIds').val(), "/");
+            return location_replace.replace("&email=" + $('#FilterSelectUserEmailIds').val(), "/");
+        }else if(param === "cpabro_login"){
+            location_replace = location.search.replace("?cpabro_login=" + $('#FilterSelectUserEmailIds').val(), "/");
+            return location_replace.replace("&cpabro_login=" + $('#FilterSelectUserEmailIds').val(), "/");
+        }
+
+    }
+
     $('.user_programs').click(function () {
 
         const this_status = $(this).attr('checked');

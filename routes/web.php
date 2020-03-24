@@ -44,6 +44,11 @@ Route::group(array('prefix' => '/', 'middleware' => 'auth'), function (){
             'middleware' => 'auth'
         ]);
 
+        Route::post('', [
+            'uses' => 'User\\SupperAdmin\\CabinetLogsController@index',
+            'middleware' => 'auth'
+        ]);
+
         Route::group(array('prefix' => 'create', 'middleware' => 'auth'), function (){
 
             Route::get('', [
