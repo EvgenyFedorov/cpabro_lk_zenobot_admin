@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call(CountriesSeeder::class);
-        /// ХУЙ
         $this->call(TimeZonesSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(UsersSeeder::class);
