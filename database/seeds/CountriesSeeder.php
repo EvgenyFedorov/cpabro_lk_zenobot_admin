@@ -34,6 +34,9 @@ class CountriesSeeder extends Seeder
         ];
 
         //DB::table('countries')->insert($data);
+
+
+
         $countries = \App\Models\Users\Countries::getCountries();
     }
 }
