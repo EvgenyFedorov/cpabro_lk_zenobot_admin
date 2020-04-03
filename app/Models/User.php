@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'parent_user', 'roles_id', 'cpabro_login', 'enable', 'email_verified_code', 'created_at', 'updated_at', 'deleted_at'
+        'name', 'email', 'password', 'parent_user', 'roles_id', 'cpabro_login', 'time_zone_id', 'enable', 'email_verified_code', 'created_at', 'updated_at', 'deleted_at'
     ];
 
     /**
@@ -94,7 +94,7 @@ class User extends Authenticatable
     public function getEdit($id){
         return DB::table('users')
             ->select(
-                'users.id', 'users.name as users_name', 'users.roles_id', 'users.email', 'users.cpabro_login', 'users.enable', 'users.created_at',
+                'users.id', 'users.name as users_name', 'users.roles_id', 'users.email', 'users.cpabro_login', 'users.enable', 'users.created_at', 'users.time_zone_id',
                 'roles.name as roles_name',
                 'accesses.privileges', 'accesses.id as accesses_id'
             )

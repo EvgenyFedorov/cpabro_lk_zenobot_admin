@@ -9,6 +9,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jobs extends Model
 {
+    private $id = null;
+    private $program_id = null;
+    private $user_id = null;
+    private $code_id = null;
+    private $status = null;
+    private $enable = null;
+    private $created_at = null;
+    private $updated_at = null;
+    private $deleted_at = null;
+
+    public $text = null;
+    public $class = null;
+    public $style = null;
+
+    public $job_statuses = [
+        [
+            'text' => 'Ожидает',
+            'class' => 'btn-info',
+            'style' => 'cursor: no-drop;'
+        ],
+        [
+            'text' => 'Отгружен',
+            'class' => 'btn-success',
+            'style' => 'cursor: help;'
+        ],
+        [
+            'text' => 'Неуспешно',
+            'class' => 'btn-danger',
+            'style' => 'cursor: help;'
+        ],
+    ];
 
     public function getEdit($id){
         return DB::table('jobs')
@@ -46,9 +77,13 @@ class Jobs extends Model
 
     }
     public function programs(){
-        return $this->hasOne(Programs::class, 'program_id', 'id');
+        return $this->belongsTo(Programs::class, 'program_id', 'id');
     }
     public function users(){
-        return $this->hasOne(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function logs(){
+        return $this->hasMany(Logs::class, 'job_id', 'id');
+    }
+
 }

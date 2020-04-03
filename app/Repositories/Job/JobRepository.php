@@ -22,6 +22,23 @@ class JobRepository extends CoreRepository
         $query[] = ['jobs.id', '>', 0];
         return $query;
     }
+    // Возвращаем массив статусов и визуадльных настроек
+    public function getStatuses(){
+
+        $objs = null;
+
+        foreach ($this->startConditions()->job_statuses as $job_status){
+
+            $memory_obj = $this->startConditions();
+
+            $memory_obj->text = $job_status['text'];
+            $memory_obj->class = $job_status['class'];
+            $memory_obj->style = $job_status['style'];
+
+            $objs[] = $memory_obj;
+        }
+        return $objs;
+    }
     // Формируется запрос по фильтру
     public function getData($query){
 
@@ -99,6 +116,7 @@ class JobRepository extends CoreRepository
                 'users.id as user_id', 'users.email as users_email', 'users.enable as users_enable')
             ->leftJoin('programs', 'jobs.program_id', '=', 'programs.id')
             ->leftJoin('users', 'jobs.user_id', '=', 'users.id')
+            ->leftJoin('logs', 'jobs.id', '=', 'logs.job_id')
             ->where([$where])
             ->whereIn($where_in[0]['name'], $where_in[0]['array'])
             ->orderBy('jobs.id', 'desc')
@@ -111,6 +129,7 @@ class JobRepository extends CoreRepository
                 'users.id as user_id', 'users.email as users_email', 'users.enable as users_enable')
             ->leftJoin('programs', 'jobs.program_id', '=', 'programs.id')
             ->leftJoin('users', 'jobs.user_id', '=', 'users.id')
+            ->leftJoin('logs', 'jobs.id', '=', 'logs.job_id')
             ->where([$where])
             ->whereIn($where_in[0]['name'], $where_in[0]['array'])
             ->whereIn($where_in[1]['name'], $where_in[1]['array'])
@@ -124,6 +143,7 @@ class JobRepository extends CoreRepository
                 'users.id as user_id', 'users.email as users_email', 'users.enable as users_enable')
             ->leftJoin('programs', 'jobs.program_id', '=', 'programs.id')
             ->leftJoin('users', 'jobs.user_id', '=', 'users.id')
+            ->leftJoin('logs', 'jobs.id', '=', 'logs.job_id')
             ->where([$where])
             ->whereIn($where_in[0]['name'], $where_in[0]['array'])
             ->whereIn($where_in[1]['name'], $where_in[1]['array'])
@@ -138,6 +158,7 @@ class JobRepository extends CoreRepository
                 'users.id as user_id', 'users.email as users_email', 'users.enable as users_enable')
             ->leftJoin('programs', 'jobs.program_id', '=', 'programs.id')
             ->leftJoin('users', 'jobs.user_id', '=', 'users.id')
+            ->rightJoin('logs', 'jobs.id', '=', 'logs.job_id')
             ->where([$where])
             ->whereIn($where_in[0]['name'], $where_in[0]['array'])
             ->whereIn($where_in[1]['name'], $where_in[1]['array'])
@@ -150,9 +171,11 @@ class JobRepository extends CoreRepository
         return $this->startConditions()
             ->select('jobs.id as jobs_id','jobs.created_at as jobs_created_at','jobs.updated_at as jobs_updated_at','jobs.deleted_at as jobs_deleted_at', 'jobs.enable as jobs_enable', 'jobs.code_id', 'jobs.status', 'jobs.enable',
                 'programs.id as programs_id', 'programs.name as programs_name','programs.bot_name as programs_bot_name', 'programs.enable as programs_enable',
-                'users.id as user_id', 'users.email as users_email', 'users.enable as users_enable')
+                'users.id as user_id', 'users.email as users_email', 'users.enable as users_enable',
+                'logs.description as log_desc', 'logs.job_id as logs_job_id', 'logs.id as logs_id')
             ->leftJoin('programs', 'jobs.program_id', '=', 'programs.id')
             ->leftJoin('users', 'jobs.user_id', '=', 'users.id')
+            ->leftJoin('logs', 'jobs.id', '=', 'logs.job_id')
             ->where([$where])
             ->orderBy('jobs.id', 'desc')
             ->paginate(10);

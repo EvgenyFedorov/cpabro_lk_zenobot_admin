@@ -249,3 +249,15 @@ Route::group(array('prefix' => 'api', 'middleware' => 'auth'), function (){
     });
 
 });
+
+Route::group(array('prefix' => 'test'), function (){
+
+    Route::get('timezones', [
+        'uses' => 'TimeZonesController@getTimeZones'
+    ]);
+
+    Route::get('countries', [
+        'uses' => 'TimeZonesController@getCountries'
+    ]);
+
+});

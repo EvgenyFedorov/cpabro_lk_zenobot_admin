@@ -77,7 +77,7 @@
                                     <th>ID</th>
                                     <th>Email</th>
                                     <th>Login (CPABRO)</th>
-                                    <th>Группа</th>
+                                    <th>Имя</th>
                                     <th>Дата регистрации</th>
                                     <th>Вкл/Выкл</th>
                                 </tr>

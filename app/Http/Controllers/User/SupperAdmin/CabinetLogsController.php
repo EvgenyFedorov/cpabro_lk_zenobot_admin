@@ -50,24 +50,12 @@ class CabinetLogsController extends UserController
             $programs = $programRepository->getAllForFilter();
             $jobs = $jobRepository->getAllForFilter();
 
-//            print "<pre>";
-
             $queries = $queryBuilderRepository->getParamsQueryJobs();
-
-//            if(isset($queries['where']['in'])){
-//                $data_jobs = $jobRepository->getAllIn($queries['where']['in']);
-//            }else{
-//                $data_jobs = $jobRepository->getAll($queries['where']);
-//            }
 
             $data_jobs = $jobRepository->getData($queries);
 
-//            print "<pre>";
-//            print_r($programs);
-//            print_r($queries);
-//            print_r($params);
-//            print_r($input);
-//            print_r($data_jobs);
+            $job_statuses = $jobRepository->getStatuses();
+
 
             return view($result['role']['dir'] . '.logs.list', [
                 'user' => $result['user'],
@@ -78,6 +66,7 @@ class CabinetLogsController extends UserController
                 'jobs' => $jobs,
                 'params' => $params,
                 'input' => $input,
+                'job_statuses' => $job_statuses
             ]);
 
         }else{

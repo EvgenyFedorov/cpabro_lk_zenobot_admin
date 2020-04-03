@@ -80,11 +80,14 @@ class CabinetUsersController extends UserController
             $programs = $this->programs()->getEditUser();
             $roles = Roles::all();
 
+            $time_zones = $this->time_zones()->getAll();
+
             return view($result['role']['dir'] . '.users.create', [
                 'user' => $result['user'],
                 'role' => $result['role'],
                 'programs' => $programs,
-                'roles' => $roles
+                'roles' => $roles,
+                'time_zones' => $time_zones
             ]);
 
         }else{
@@ -116,6 +119,7 @@ class CabinetUsersController extends UserController
                     $user->roles_id = 4;
                     $user->email = $input['email'];
                     $user->cpabro_login = $input['cpabro_login'];
+                    $user->time_zone_id = $input['time_zone_id'];
                     $user->email_verified_code = Str::random(10);
                     $user->password = bcrypt($input['password']);
                     $user->enable = ($input['user_enable'] == "true") ? 1 : 0;
@@ -225,6 +229,8 @@ class CabinetUsersController extends UserController
             $edit_user = $this->users()->getEdit($id);
             $edit_user[0]->privileges = json_decode($edit_user[0]->privileges);
 
+            $time_zones = $this->time_zones()->getAll();
+
             $programs = $this->programs()->getEditUser();
 
             $jobs = $this->jobs()->getEdit($id);
@@ -235,6 +241,7 @@ class CabinetUsersController extends UserController
                 'edit_user' => $edit_user[0],
                 'programs' => $programs,
                 'jobs' => $jobs,
+                'time_zones' => $time_zones
             ]);
 
         }else{
@@ -263,6 +270,7 @@ class CabinetUsersController extends UserController
                 $user->name = $input['name'];
                 $user->email = $input['email'];
                 $user->cpabro_login = $input['cpabro_login'];
+                $user->time_zone_id = $input['user_time_zone'];
                 $user->enable = ($input['user_enable'] == "true") ? 1 : 0;
                 $user->updated_at = date("Y-m-d H:i:s");
 

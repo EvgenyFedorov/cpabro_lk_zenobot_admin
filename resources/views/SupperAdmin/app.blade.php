@@ -13,6 +13,9 @@
 {{--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">--}}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <!-- Scripts -->
+{{--    <script src="{{ url('//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js') }}" language="JavaScript" type="text/javascript"></script>--}}
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
@@ -26,10 +29,9 @@
     <!-- CSRF Token -->
     <meta id="_token" content="{{ csrf_token() }}">
 
-    <title>Личный Кабинет</title>
-
-    <!-- Scripts -->
     <script src="{{ asset('js/custom.js') }}" defer></script>
+
+    <title>Личный Кабинет</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        $this->call(CountriesSeeder::class);
+        $this->call(TimeZonesSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(UsersSeeder::class);
         $this->call(AccessesSeeder::class);
@@ -33,6 +35,13 @@ class DatabaseSeeder extends Seeder
                     $jobs->program_id = $program->id;
                     $jobs->user_id = $user->id;
                     $jobs->save();
+
+                    // Запускаем фабрику по логам
+                    factory(\App\Models\Bot\Logs::class, 1)->make()->each(function ($logs) use ($jobs){
+                        $logs->job_id = $jobs->id;
+                        $logs->save();
+                    });
+
                 });
 
             });

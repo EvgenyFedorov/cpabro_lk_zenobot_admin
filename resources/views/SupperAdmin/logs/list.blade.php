@@ -120,7 +120,7 @@
 {{--                                    <th>Изменен</th>--}}
                                     <th>Вкл/Выкл</th>
                                 </tr>
-                                @if(isset($data_jobs) AND count($data_jobs) > 0)
+                                @if(isset($data_jobs) && count($data_jobs) > 0)
 
                                     @foreach($data_jobs as $data_job)
 
@@ -141,11 +141,40 @@
                                             </td>
                                             <td>{{$data_job->bot_name}}</td>
                                             <td>{{$data_job->code_id}}</td>
-                                            <td>
-                                                @if($data_job->status == 0)
-                                                    Ожидает
+                                            <td style="text-align: center;">
+                                                @if(isset($job_statuses[$data_job->status]))
+                                                    <!-- Кнопка запуска модального окна -->
+                                                        <div class="open_log btn {{$job_statuses[$data_job->status]->class}}" data-toggle="modal" data-target="#myModal{{$data_job->jobs_id}}">
+                                                            {{$job_statuses[$data_job->status]->text}}
+                                                        </div>
+
+                                                        <!-- Модальное окно -->
+                                                        <div class="modal fade" id="myModal{{$data_job->jobs_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 style="display: block; text-align: center;" class="modal-title" id="myModalLabel">Задача №{{$data_job->jobs_id}}</h4>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        @if(isset($data_job->log_desc) && !empty($data_job->log_desc))
+                                                                            {{$data_job->log_desc}}
+                                                                        @else
+                                                                            {{$job_statuses[$data_job->status]->text}}
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                 @else
-                                                    Отгружен
+                                                    <div>
+                                                        <div class="btn btn-default">Не определено</div>
+                                                    </div>
                                                 @endif
                                             </td>
                                             <td>{{$data_job->jobs_created_at}}</td>
