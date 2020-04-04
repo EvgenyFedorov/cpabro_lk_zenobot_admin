@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\RolesController;
 use App\Http\Controllers\User\UserController;
 use App\Models\Bot\Jobs;
+use App\Models\Users\TimeZones;
 use App\Repositories\Filter\FilterRepository;
 use App\Repositories\Job\JobRepository;
 use App\Repositories\Program\ProgramRepository;
@@ -56,6 +57,8 @@ class CabinetLogsController extends UserController
 
             $job_statuses = $jobRepository->getStatuses();
 
+            $time_zone = TimeZones::find($result['user']->time_zone_id);
+
 
             return view($result['role']['dir'] . '.logs.list', [
                 'user' => $result['user'],
@@ -66,6 +69,7 @@ class CabinetLogsController extends UserController
                 'jobs' => $jobs,
                 'params' => $params,
                 'input' => $input,
+                'time_zone' => $time_zone,
                 'job_statuses' => $job_statuses
             ]);
 
